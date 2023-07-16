@@ -13,13 +13,12 @@ export const QueueContainer = () => {
     return (
         <div className="queue-container">
             <ul className="queue-list">
-                {state.map(({ id, message }) => (
+                {state.map((item) => (
                     <QueueItem
-                        key={id}
-                        onRemove={() => removeQueueItem(id)}
-                    >
-                        {message}
-                    </QueueItem>
+                        key={item.id}
+                        onRemove={() => removeQueueItem(item.id)}
+                        item={item}
+                    />
                 ))}
             </ul>
         </div>

@@ -2,8 +2,9 @@ import { ReactNode, createContext } from "react";
 import { useQueue } from "../hooks/useQueue";
 
 export interface QueueItem {
-    id: number,
+    id: number
     message: string
+    autoClose?: boolean
 }
 
 export interface Props {
@@ -25,8 +26,8 @@ export const QueueContext = createContext<QueueContextType>({
 export const QueueContextProvider = ({children}: Props) => {
     const { state, queue, update } = useQueue<QueueItem>({
         initialValues: [
-            { id: 1, message: 'first' },
-            { id: 2, message: 'two' }
+            { id: 1, message: 'first', autoClose: true, },
+            { id: 2, message: 'two', autoClose: false, }
         ],
         limit: 4,
     });
@@ -45,15 +46,26 @@ export const QueueContextProvider = ({children}: Props) => {
         );
     };
 
-    const addQueueItem = (notification: QueueItem) => {
-        const id = notification.id;
-    
+    const createQueueItemFactory = (queueItem: QueueItem) => {
+        const {id, message, autoClose = true} = queueItem;
+
+        return {
+            id,
+            message,
+            autoClose,
+        }
+    }
+
+    const addQueueItem = (createdElement: QueueItem) => {
+        const createdItem = createQueueItemFactory(createdElement)
+        const id = createdItem.id;
+
         update((notifications) => {
-          if (notification.id && notifications.some((n) => n.id === notification.id)) {
+          if (createdItem.id && notifications.some((n) => n.id === createdItem.id)) {
             return notifications;
           }
     
-          return [...notifications, { ...notification, id }];
+          return [...notifications, { ...createdItem, id }];
         });
     
         return id;

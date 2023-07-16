@@ -1,34 +1,19 @@
-import { ReactNode, useCallback, useEffect, useRef } from "react"
-
+import { useEffect, useRef } from "react"
+import { QueueItem as QueueItemType } from './queue-context';
 interface Props {
-    children: ReactNode
+    item: QueueItemType
     onRemove: () => void
 }
 
-export const QueueItem = ({ children, onRemove }: Props) => {
+export const QueueItem = ({ item, onRemove }: Props) => {
+    const {message, autoClose} = item;
+
     const hideTimeout = useRef(0)
 
     const cancelDelayedHide = () => {
         clearTimeout(hideTimeout.current)
         hideTimeout.current = 0;
     }
-
-    // const handleHide = useCallback(() => {
-    //     console.log('HIDE')
-    //     onRemove()
-    //     cancelDelayedHide()
-    // }, [onRemove])
-
-    // const startTimer = useCallback(() => {
-    //     hideTimeout.current = window.setTimeout(handleHide, 5_000)
-    //   }, [handleHide]);
-
-    // useEffect(() => {
-    //     console.log('RERENDER')
-    //     startTimer()
-
-    //     return cancelDelayedHide
-    // }, [startTimer])
 
     const handleHide = () => {
         console.log('HIDE')
@@ -37,11 +22,13 @@ export const QueueItem = ({ children, onRemove }: Props) => {
     }
 
     const handleDelayedHide = () => {
-        hideTimeout.current = window.setTimeout(handleHide, 5_000)
+        if (autoClose) {
+            hideTimeout.current = window.setTimeout(handleHide, 5_000)
+        }
+        
     }
 
     useEffect(() => {
-        console.log('RERENDER')
         handleDelayedHide()
 
         return cancelDelayedHide
@@ -54,7 +41,7 @@ export const QueueItem = ({ children, onRemove }: Props) => {
             onMouseLeave={handleDelayedHide}
         >
             <div>
-                <span className="queue-item__text">{children}</span>
+                <span className="queue-item__text">{message}</span>
             </div>
 
             <div>
@@ -63,7 +50,11 @@ export const QueueItem = ({ children, onRemove }: Props) => {
                 </button>
             </div>
 
-            <div className="progress-bar"></div>
+            {
+                autoClose && (
+                    <div className="progress-bar"></div>
+                )
+            }
         </li>
     )
 }
