@@ -1,0 +1,14 @@
+#root {
+  padding: 2rem;
+}
+
+.app {
+  display: flex;
+  gap: 46px;
+}
+
+.app-queue {
+  display: flex;
+  width: 100%;
+  height: 650px;
+}
