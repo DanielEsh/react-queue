@@ -1,5 +1,5 @@
 import './App.css'
-import { FormMessage } from './components/form-message'
+import { Aside } from './components/aside'
 import { QueueContainer } from './components/queue-container'
 
 import { QueueContextProvider } from './components/queue-context'
@@ -8,9 +8,7 @@ function App() {
   return (
     <QueueContextProvider>
       <div className="app">
-        <div>
-          <FormMessage />
-        </div>
+        <Aside />
 
         <div className="app-queue">
           <QueueContainer />
