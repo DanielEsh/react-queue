@@ -1,12 +1,6 @@
 import { ReactNode, createContext } from "react";
 import { useQueue } from "../hooks/useQueue";
-
-export interface QueueItem {
-    id: number
-    message: string
-    autoClose?: boolean
-    duration?: number
-}
+import type { QueueItem, CreatedQueueItem } from "../types";
 
 export interface Props {
     children: ReactNode
@@ -30,13 +24,12 @@ export const QueueContextProvider = ({children}: Props) => {
     const { state, queue, update } = useQueue<QueueItem>({
         initialValues: [
             { id: 1, message: 'first', autoClose: true, duration: 5,},
-            { id: 2, message: 'two', autoClose: false, duration: 5, }
+            { id: 2, message: 'two', autoClose: true, duration: 5, }
         ],
         limit: LIMIT,
     });
 
     const removeQueueItem = (id: number) => {
-        console.log('REMOVE', id);
         update((notifications) =>
             notifications.filter((notification) => {
                 console.log('notification', notification, id)
@@ -49,7 +42,7 @@ export const QueueContextProvider = ({children}: Props) => {
         );
     };
 
-    const createQueueItemFactory = (queueItem: QueueItem) => {
+    const createQueueItemFactory = (queueItem: QueueItem): CreatedQueueItem => {
         const DEFAULT_DURATION = 5;
         const {id, message, autoClose = true, duration = DEFAULT_DURATION} = queueItem;
 

@@ -1,7 +1,7 @@
 import { useEffect, useRef, CSSProperties } from "react"
-import { QueueItem as QueueItemType } from './queue-context';
+import { CreatedQueueItem } from '../types';
 interface Props {
-    item: QueueItemType
+    item: CreatedQueueItem
     onRemove: () => void
 }
 
