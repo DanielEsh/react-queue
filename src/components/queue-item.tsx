@@ -1,12 +1,20 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, CSSProperties } from "react"
 import { QueueItem as QueueItemType } from './queue-context';
 interface Props {
     item: QueueItemType
     onRemove: () => void
 }
 
+interface Styles extends CSSProperties {
+    '--duration': string;
+}
+
 export const QueueItem = ({ item, onRemove }: Props) => {
-    const {message, autoClose} = item;
+    const {message, autoClose, duration} = item;
+
+    const animationStyles: Styles = {
+        '--duration': `${duration}s`,
+    }
 
     const hideTimeout = useRef(0)
 
@@ -23,7 +31,7 @@ export const QueueItem = ({ item, onRemove }: Props) => {
 
     const handleDelayedHide = () => {
         if (autoClose) {
-            hideTimeout.current = window.setTimeout(handleHide, 5_000)
+            hideTimeout.current = window.setTimeout(handleHide, duration * 1000)
         }
         
     }
@@ -32,7 +40,7 @@ export const QueueItem = ({ item, onRemove }: Props) => {
         handleDelayedHide()
 
         return cancelDelayedHide
-    }, [])
+    }, [autoClose, duration])
 
     return (
         <li 
@@ -52,7 +60,7 @@ export const QueueItem = ({ item, onRemove }: Props) => {
 
             {
                 autoClose && (
-                    <div className="progress-bar"></div>
+                    <div className="progress-bar" style={animationStyles}></div>
                 )
             }
         </li>

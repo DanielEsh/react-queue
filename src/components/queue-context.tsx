@@ -5,6 +5,7 @@ export interface QueueItem {
     id: number
     message: string
     autoClose?: boolean
+    duration?: number
 }
 
 export interface Props {
@@ -18,6 +19,8 @@ export interface QueueContextType {
     removeQueueItem?: (id: number) => void;
 }
 
+export const LIMIT = 4;
+
 export const QueueContext = createContext<QueueContextType>({
     state: [],
     queue: [],
@@ -26,10 +29,10 @@ export const QueueContext = createContext<QueueContextType>({
 export const QueueContextProvider = ({children}: Props) => {
     const { state, queue, update } = useQueue<QueueItem>({
         initialValues: [
-            { id: 1, message: 'first', autoClose: true, },
-            { id: 2, message: 'two', autoClose: false, }
+            { id: 1, message: 'first', autoClose: true, duration: 5,},
+            { id: 2, message: 'two', autoClose: false, duration: 5, }
         ],
-        limit: 4,
+        limit: LIMIT,
     });
 
     const removeQueueItem = (id: number) => {
@@ -47,12 +50,14 @@ export const QueueContextProvider = ({children}: Props) => {
     };
 
     const createQueueItemFactory = (queueItem: QueueItem) => {
-        const {id, message, autoClose = true} = queueItem;
+        const DEFAULT_DURATION = 5;
+        const {id, message, autoClose = true, duration = DEFAULT_DURATION} = queueItem;
 
         return {
             id,
             message,
             autoClose,
+            duration,
         }
     }
 

@@ -111,6 +111,7 @@ button:focus-visible {
 }
 
 .progress-bar {
+  --duration: 5s;
   width: 200px;
   height: 20px;
   background-color: #ddd;
@@ -126,7 +127,11 @@ button:focus-visible {
   width: 0;
   height: 100%;
   background-color: #4caf50;
-  animation: fill-progress 5s linear forwards;
+  /* animation: fill-progress 5s linear forwards; */
+  animation-name: fill-progress;
+  animation-duration: var(--duration);
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
 }
 
 @keyframes fill-progress {
