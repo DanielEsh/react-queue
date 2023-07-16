@@ -10,6 +10,7 @@ export const QueueItem = ({ children, onRemove }: Props) => {
 
     const cancelDelayedHide = () => {
         clearTimeout(hideTimeout.current)
+        hideTimeout.current = 0;
     }
 
     // const handleHide = useCallback(() => {
@@ -29,26 +30,29 @@ export const QueueItem = ({ children, onRemove }: Props) => {
     //     return cancelDelayedHide
     // }, [startTimer])
 
-
     const handleHide = () => {
         console.log('HIDE')
         onRemove()
         cancelDelayedHide()
     }
 
-    const startTimer = () => {
+    const handleDelayedHide = () => {
         hideTimeout.current = window.setTimeout(handleHide, 5_000)
     }
 
     useEffect(() => {
         console.log('RERENDER')
-        startTimer()
+        handleDelayedHide()
 
         return cancelDelayedHide
     }, [])
 
     return (
-        <li className="queue-item">
+        <li 
+            className="queue-item"
+            onMouseEnter={cancelDelayedHide}
+            onMouseLeave={handleDelayedHide}
+        >
             <div>
                 <span className="queue-item__text">{children}</span>
             </div>
