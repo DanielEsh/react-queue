@@ -9,8 +9,8 @@ export interface Props {
 export interface QueueContextType {
     state: QueueItem[]
     queue: QueueItem[]
-    addQueueItem?: (notification: QueueItem) => number;
-    removeQueueItem?: (id: number) => void;
+    addQueueItem: (notification: QueueItem) => number;
+    removeQueueItem: (id: number) => void;
 }
 
 export const LIMIT = 4;
@@ -18,6 +18,12 @@ export const LIMIT = 4;
 export const QueueContext = createContext<QueueContextType>({
     state: [],
     queue: [],
+    addQueueItem: () => {
+        throw new Error('not implemented')
+    },
+    removeQueueItem: () => {
+        throw new Error('not implemented')
+    },
 });
 
 export const QueueContextProvider = ({children}: Props) => {
