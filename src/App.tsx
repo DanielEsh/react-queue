@@ -1,22 +1,30 @@
 import './App.css'
 import { FormMessage } from './components/form-message'
 import { QueueContainer } from './components/queue-container'
-import { $store } from "./store"
+
 import { useStore } from 'effector-react'
 
 import { QueueContextProvider } from './components/queue-context'
 
+
+/**
+ * features
+ * Создание новых элементов
+ * Немедленное удаление элементов
+ * 
+ * Одновременное закрытие элементов, которые были созданны одновременно
+ * Независимое закрытие элементов по таймауту
+ * 
+ * 
+ */
+
 function App() {
-  const { queue } = useStore($store)
 
   return (
     <QueueContextProvider>
       <div className="app">
         <div>
           <FormMessage />
-          <div>
-            <span>Всего элементов в очереди: {queue.length}</span>
-          </div>
         </div>
 
         <div className="app-queue">

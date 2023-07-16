@@ -1,18 +1,16 @@
-import { ChangeEvent, FormEvent, useState, useContext } from "react"
-import { QueueContext } from "./queue-context.tsx";
+import { ChangeEvent, FormEvent, useState } from "react"
+import { addItem } from '../store';
 
 export const FormMessage = () => {
-    const {addQueueItem} = useContext(QueueContext);
-
     const [inputValue, setInputValue] = useState('');
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         setInputValue(event.target.value);
     }
 
-    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        addQueueItem({
+        await addItem({
             id: Date.now(),
             message: inputValue,
         })

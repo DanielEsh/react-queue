@@ -1,4 +1,4 @@
-import { Store, createEffect, createEvent, createStore, forward, sample } from "effector"
+import { createEffect, createEvent, createStore, sample } from "effector"
 
 export interface QueueItem {
     id: number,
@@ -17,30 +17,18 @@ export const initialValues: QueueItem[] = [
     { id: 2, message: 'two' }
 ]
 
-const LIMIT = 4;
+export const state = createStore<QueueItem[]>(initialValues)
 
-export const add = createEvent<QueueItem>()
-export const update = createEvent<UpdateParams>()
-
-export const $store = createStore<QueueStore>({
-    queue: [],
-    stack: initialValues,
+export const addItem = createEffect(async (item: QueueItem) => {
+    await new Promise((resolve) => setTimeout(resolve, 0))
+    return item;
 })
 
-$store.on(update, (store, fn) => {
-    const results = fn([...store.stack, ...store.queue]);
-
-    return {
-        stack: results.slice(0, LIMIT),
-        queue: results.slice(LIMIT),
-    };
+export const removeItem = createEffect(async (id: number) => {
+    await new Promise((resolve) => setTimeout(resolve, 0))
+    return id;
 })
 
-$store.on(add, (store, item) => {
-    const results = [...store.stack, ...store.queue, item]
+state.on(addItem.doneData, (state, newItem) => [...state, newItem])
+state.on(removeItem.doneData, (state, id) => state.filter(item => item.id !== id))
 
-    return {
-        stack: results.slice(0, LIMIT),
-        queue: results.slice(LIMIT),
-    }
-})

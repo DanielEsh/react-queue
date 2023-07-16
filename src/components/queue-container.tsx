@@ -1,6 +1,7 @@
-import {useContext} from "react"
+
 import { QueueItem } from "./queue-item"
-import { QueueContext } from "./queue-context.tsx";
+import { state, removeItem } from '../store';
+import { useStore } from "effector-react";
 
 export interface QueueItem {
     id: number,
@@ -8,12 +9,17 @@ export interface QueueItem {
 }
 
 export const QueueContainer = () => {
-    const {state, removeQueueItem} = useContext(QueueContext);
+
+    const store = useStore(state);
+
+    const removeQueueItem = async (id: number) => {
+        await removeItem(id)
+    }
 
     return (
         <div className="queue-container">
             <ul className="queue-list">
-                {state.map(({ id, message }, index) => (
+                {store.map(({ id, message }, index) => (
                     <QueueItem
                         key={index}
                         onRemove={() => removeQueueItem(id)}
