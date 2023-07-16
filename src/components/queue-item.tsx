@@ -10,7 +10,7 @@ interface Styles extends CSSProperties {
 }
 
 export const QueueItem = ({ item, onRemove }: Props) => {
-    const {message, autoClose, duration} = item;
+    const { message, autoClose, duration } = item;
 
     const animationStyles: Styles = {
         '--duration': `${duration}s`,
@@ -33,7 +33,7 @@ export const QueueItem = ({ item, onRemove }: Props) => {
         if (autoClose) {
             hideTimeout.current = window.setTimeout(handleHide, duration * 1000)
         }
-        
+
     }
 
     useEffect(() => {
@@ -43,19 +43,21 @@ export const QueueItem = ({ item, onRemove }: Props) => {
     }, [autoClose, duration])
 
     return (
-        <li 
+        <li
             className="queue-item"
             onMouseEnter={cancelDelayedHide}
             onMouseLeave={handleDelayedHide}
         >
-            <div>
-                <span className="queue-item__text">{message}</span>
-            </div>
+            <div className="queue-item__content">
+                <div>
+                    <span className="queue-item__text">{message}</span>
+                </div>
 
-            <div>
-                <button onClick={onRemove}>
-                    X
-                </button>
+                <div>
+                    <button onClick={onRemove}>
+                        X
+                    </button>
+                </div>
             </div>
 
             {

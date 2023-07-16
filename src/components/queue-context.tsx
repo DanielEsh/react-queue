@@ -13,7 +13,7 @@ export interface QueueContextType {
     removeQueueItem: (id: number) => void;
 }
 
-export const LIMIT = 4;
+export const LIMIT = 2;
 
 export const QueueContext = createContext<QueueContextType>({
     state: [],
@@ -30,7 +30,7 @@ export const QueueContextProvider = ({children}: Props) => {
     const { state, queue, update } = useQueue<QueueItem>({
         initialValues: [
             { id: 1, message: 'first', autoClose: true, duration: 5,},
-            { id: 2, message: 'two', autoClose: true, duration: 5, }
+            { id: 2, message: 'two', autoClose: false, duration: 5, }
         ],
         limit: LIMIT,
     });
