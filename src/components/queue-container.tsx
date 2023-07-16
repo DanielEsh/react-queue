@@ -13,9 +13,9 @@ export const QueueContainer = () => {
     return (
         <div className="queue-container">
             <ul className="queue-list">
-                {state.map(({ id, message }, index) => (
+                {state.map(({ id, message }) => (
                     <QueueItem
-                        key={index}
+                        key={id}
                         onRemove={() => removeQueueItem(id)}
                     >
                         {message}
